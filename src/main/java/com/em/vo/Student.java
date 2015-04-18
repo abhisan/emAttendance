@@ -2,12 +2,10 @@ package com.em.vo;
 
 import android.graphics.drawable.Drawable;
 
-import com.em.enums.AttendanceType;
-
 public class Student {
     private String studentName;
     private Long studentId;
-    private AttendanceType type;
+    private int type;
 
     public Drawable getStudentIcon() {
         return studentIcon;
@@ -34,10 +32,12 @@ public class Student {
     public Long getStudentId() {
         return studentId;
     }
-    public AttendanceType getType() {
+
+    public int getType() {
         return type;
     }
-    public void setType(AttendanceType type) {
+
+    public void setType(int type) {
         this.type = type;
     }
 
