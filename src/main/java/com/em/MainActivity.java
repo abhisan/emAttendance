@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.em.helper.CallBack;
 import com.em.adapters.SectionsPagerAdapter;
+import com.em.helper.ResponseEntity;
 import com.em.services.StudentService;
 import com.em.services.impl.StudentServiceImpl;
 import com.em.utils.EmUtils;
@@ -47,7 +48,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void callBack(List<Student> _students) {
                 students = _students;
-                Toast.makeText(getApplicationContext(), "Could not fetch student list.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Could not fetch the student list.", Toast.LENGTH_SHORT).show();
                 EmUtils.hideProgressDialog(progressDialog);
             }
         });
@@ -74,6 +75,20 @@ public class MainActivity extends ActionBarActivity {
             return true;
         } else if (id == R.id.action_save) {
             Toast.makeText(getApplicationContext(), "TODO", Toast.LENGTH_SHORT).show();
+            EmUtils.showProgressDialog(progressDialog);
+            studentService.saveAttendance(students, new CallBack<ResponseEntity>() {
+                @Override
+                public void callBack(ResponseEntity responseEntity) {
+                    Toast.makeText(getApplicationContext(), "Attendance saved successfully.", Toast.LENGTH_SHORT).show();
+                    EmUtils.hideProgressDialog(progressDialog);
+                }
+            }, new CallBack<ResponseEntity>() {
+                @Override
+                public void callBack(ResponseEntity responseEntity) {
+                    Toast.makeText(getApplicationContext(), "Could not save the attendance.", Toast.LENGTH_SHORT).show();
+                    EmUtils.hideProgressDialog(progressDialog);
+                }
+            });
             return true;
         }
         return super.onOptionsItemSelected(item);
