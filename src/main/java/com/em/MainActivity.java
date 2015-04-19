@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.em.helper.CallBack;
 import com.em.adapters.SectionsPagerAdapter;
 import com.em.helper.ResponseEntity;
@@ -74,7 +75,6 @@ public class MainActivity extends ActionBarActivity {
             Toast.makeText(getApplicationContext(), "TODO", Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.action_save) {
-            Toast.makeText(getApplicationContext(), "TODO", Toast.LENGTH_SHORT).show();
             EmUtils.showProgressDialog(progressDialog);
             studentService.saveAttendance(students, new CallBack<ResponseEntity>() {
                 @Override
@@ -82,9 +82,9 @@ public class MainActivity extends ActionBarActivity {
                     Toast.makeText(getApplicationContext(), "Attendance saved successfully.", Toast.LENGTH_SHORT).show();
                     EmUtils.hideProgressDialog(progressDialog);
                 }
-            }, new CallBack<ResponseEntity>() {
+            }, new CallBack<VolleyError>() {
                 @Override
-                public void callBack(ResponseEntity responseEntity) {
+                public void callBack(VolleyError responseEntity) {
                     Toast.makeText(getApplicationContext(), "Could not save the attendance.", Toast.LENGTH_SHORT).show();
                     EmUtils.hideProgressDialog(progressDialog);
                 }
