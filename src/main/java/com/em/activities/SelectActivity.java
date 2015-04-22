@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,9 +14,12 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.em.MainActivity;
 import com.em.R;
 import com.em.helper.CallBack;
+import com.em.helper.Constants;
+import com.em.helper.ResponseEntity;
 import com.em.services.StudentService;
 import com.em.services.impl.StudentServiceImpl;
 import com.em.utils.EmUtils;
@@ -114,6 +119,22 @@ public class SelectActivity extends ActionBarActivity {
                 EmUtils.hideProgressDialog(progressDialog);
             }
         });
+
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_select, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent i = new Intent(this, PreferencesActivity.class);
+            startActivity(i);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public ArrayAdapter<String> getClassList(List<SClass> sClasses) {

@@ -76,11 +76,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent i = new Intent(this, PreferencesActivity.class);
-            startActivity(i);
-            return true;
-        } else if (id == R.id.action_save) {
+        if (id == R.id.action_save) {
             EmUtils.showProgressDialog(progressDialog);
             String subjectId = getIntent().getExtras().getString(Constants.CLASS_ID);
             studentService.saveAttendance(Integer.parseInt(subjectId), students, new CallBack<ResponseEntity>() {
