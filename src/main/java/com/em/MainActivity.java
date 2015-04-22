@@ -2,6 +2,7 @@ package com.em;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -10,8 +11,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.em.helper.CallBack;
+import com.em.activities.PreferencesActivity;
 import com.em.adapters.SectionsPagerAdapter;
+import com.em.helper.CallBack;
+import com.em.helper.Constants;
 import com.em.helper.ResponseEntity;
 import com.em.services.StudentService;
 import com.em.services.impl.StudentServiceImpl;
@@ -32,12 +35,14 @@ public class MainActivity extends ActionBarActivity {
         Context _this = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        String classId = getIntent().getExtras().getString(Constants.CLASS_ID);
+        String sectionId = getIntent().getExtras().getString(Constants.SECTION_ID);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);
         progressDialog = new ProgressDialog(this);
         EmUtils.showProgressDialog(progressDialog);
         studentService = new StudentServiceImpl();
-        studentService.getStudents(1, 1, new CallBack<List<Student>>() {
+        studentService.getStudents(Integer.parseInt(classId), Integer.parseInt(sectionId), new CallBack<List<Student>>() {
             @Override
             public void callBack(List<Student> _students) {
                 students = _students;
@@ -72,11 +77,13 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            Toast.makeText(getApplicationContext(), "TODO", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(this, PreferencesActivity.class);
+            startActivity(i);
             return true;
         } else if (id == R.id.action_save) {
             EmUtils.showProgressDialog(progressDialog);
-            studentService.saveAttendance(students, new CallBack<ResponseEntity>() {
+            String subjectId = getIntent().getExtras().getString(Constants.CLASS_ID);
+            studentService.saveAttendance(Integer.parseInt(subjectId), students, new CallBack<ResponseEntity>() {
                 @Override
                 public void callBack(ResponseEntity responseEntity) {
                     Toast.makeText(getApplicationContext(), "Attendance saved successfully.", Toast.LENGTH_SHORT).show();

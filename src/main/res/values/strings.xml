@@ -5,5 +5,18 @@
     <string name="action_search">Search</string>
     <string name="previous"><![CDATA[<]]></string>
     <string name="next"><![CDATA[>]]></string>
-
+    <string name="server_location">Server Location</string>
+    <string name="server_port">Server Port</string>
+    <string name="class_id">Class ID</string>
+    <string name="section_id">Section ID</string>
+    <string name="server_location_value">192.168.1.3</string>
+    <string name="server_port_value">8080</string>
+    <string name="class_id_value">10</string>
+    <string name="section_id_value">2</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="select_class_prompt">Choose a class</string>
+    <string name="select_section_prompt">Choose a section</string>
+    <string name="select_subject_prompt">Choose a subject</string>
+    <string name="select_ok">OK</string>
+    <string name="select_cancel">Cancel</string>
 </resources>

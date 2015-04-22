@@ -1,6 +1,10 @@
 package com.em.utils;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import com.em.AppController;
 
 public class EmUtils {
     public static void showProgressDialog(ProgressDialog pDialog) {
@@ -17,4 +21,10 @@ public class EmUtils {
             pDialog.hide();
     }
 
+    public static void clearPreferences() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(AppController.getInstance().getApplicationContext());
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.clear();
+        editor.commit();
+    }
 }
