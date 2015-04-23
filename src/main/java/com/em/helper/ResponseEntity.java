@@ -4,6 +4,7 @@ public class ResponseEntity {
 
     private String statusCode;
     private Integer errorCode;
+    private String message;
 
     public String getStatusCode() {
         return statusCode;
@@ -13,7 +14,6 @@ public class ResponseEntity {
         this.statusCode = statusCode;
     }
 
-
     public Integer getErrorCode() {
         return errorCode;
     }
@@ -22,5 +22,11 @@ public class ResponseEntity {
         this.errorCode = errorCode;
     }
 
+    public String getMessage() {
+        return message;
+    }
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

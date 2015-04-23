@@ -17,7 +17,7 @@ public class AppController extends Application {
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private static AppController mInstance;
-
+    private String token;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -70,5 +70,12 @@ public class AppController extends Application {
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(tag);
         }
+    }
+
+    public String getToken(){
+        return this.token;
+    }
+    public void setToken(String token){
+        this.token = token;
     }
 }

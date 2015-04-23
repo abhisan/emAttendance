@@ -45,7 +45,18 @@ public class PlaceholderFragment extends Fragment {
         studentId.setText(data.getStudentId().toString());
         NetworkImageView studentImage = (NetworkImageView) rootView.findViewById(R.id.studentImage);
         loadProfileImage(studentImage);
-        ((Button) rootView.findViewById(R.id.presentButton)).setTextColor(AttendanceType.getAttendanceType(data.getType()).getColor());
+        AttendanceType type = AttendanceType.getAttendanceType(data.getType());
+        if(type==AttendanceType.PRESENT)
+            ((Button) rootView.findViewById(R.id.presentButton)).setTextColor(type.getColor());
+        else if(type==AttendanceType.ABSENT){
+            ((Button) rootView.findViewById(R.id.absentButton)).setTextColor(type.getColor());
+        }
+        else if(type==AttendanceType.LEAVE){
+            ((Button) rootView.findViewById(R.id.leaveButton)).setTextColor(type.getColor());
+        }
+        else if(type==AttendanceType.LATE){
+            ((Button) rootView.findViewById(R.id.lateButton)).setTextColor(type.getColor());
+        }
         rootView.findViewById(R.id.presentButton).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Toast.makeText(getActivity().getApplicationContext(), AttendanceType.getAttendanceType(data.getType()).toString() + "=>Present", Toast.LENGTH_SHORT).show();

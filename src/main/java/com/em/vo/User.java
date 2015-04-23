@@ -1,7 +1,7 @@
 package com.em.vo;
 
 public class User {
-    private String useriId;
+    private String userId;
     private String password;
 
     public String getPassword() {
@@ -12,11 +12,13 @@ public class User {
         this.password = password;
     }
 
-    public String getUseriId() {
-        return useriId;
+
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUseriId(String useriId) {
-        this.useriId = useriId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
+
 }

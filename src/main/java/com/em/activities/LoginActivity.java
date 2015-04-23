@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.em.AppController;
 import com.em.R;
 import com.em.helper.CallBack;
 import com.em.helper.ResponseEntity;
@@ -51,7 +52,7 @@ public class LoginActivity extends ActionBarActivity {
                     passText.setError(getString(R.string.error_field_required));
                 } else {
                     User user = new User();
-                    user.setUseriId(userId);
+                    user.setUserId(userId);
                     user.setPassword(password);
                     StudentService studentService = new StudentServiceImpl();
                     EmUtils.showProgressDialog(progressDialog);
@@ -59,6 +60,7 @@ public class LoginActivity extends ActionBarActivity {
                         @Override
                         public void callBack(ResponseEntity responseEntity) {
                             if (responseEntity.getStatusCode().equals("OK")) {
+                                AppController.getInstance().setToken(responseEntity.getMessage());
                                 Intent i = new Intent(_this, SelectActivity.class);
                                 i.putExtra("data", "value");
                                 startActivity(i);
