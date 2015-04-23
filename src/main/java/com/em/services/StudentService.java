@@ -8,11 +8,13 @@ import com.em.vo.SClass;
 import com.em.vo.Section;
 import com.em.vo.Student;
 import com.em.vo.Subject;
+import com.em.vo.User;
 
 import org.json.JSONObject;
 
 import java.util.List;
 public interface StudentService {
+    public void login(User user, final CallBack <ResponseEntity> successCallBack, final CallBack<VolleyError> failureCallBack );
     public void getClasses(final CallBack <List<SClass>> successCallBack, final CallBack<List<SClass>> failureCallBack );
     public void getSections(int classId, final CallBack <List<Section>> successCallBack, final CallBack<List<Section>> failureCallBack );
     public void getSubjects(int classId, final CallBack <List<Subject>> successCallBack, final CallBack<List<Subject>> failureCallBack );

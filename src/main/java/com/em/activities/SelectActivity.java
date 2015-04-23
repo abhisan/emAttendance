@@ -2,11 +2,12 @@ package com.em.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,12 +15,9 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
 import com.em.MainActivity;
 import com.em.R;
 import com.em.helper.CallBack;
-import com.em.helper.Constants;
-import com.em.helper.ResponseEntity;
 import com.em.services.StudentService;
 import com.em.services.impl.StudentServiceImpl;
 import com.em.utils.EmUtils;
@@ -45,6 +43,7 @@ public class SelectActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select);
         final Activity _this = this;
+
         selectButton = (Button) findViewById(R.id.select_ok);
         cancelButton = (Button) findViewById(R.id.select_cancel);
         selectClass = (Spinner) findViewById(R.id.select_class);
@@ -85,16 +84,14 @@ public class SelectActivity extends ActionBarActivity {
                 }, new CallBack<List<Subject>>() {
                     @Override
                     public void callBack(List<Subject> subjects) {
-                        Toast.makeText(getApplicationContext(), "Could not fetch the section list.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Could not fetch the subject list.", Toast.LENGTH_SHORT).show();
                         EmUtils.hideProgressDialog(progressDialog);
                     }
                 });
-                //selectSubject.setAdapter(getSubjectList());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
             }
         });
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -119,23 +116,8 @@ public class SelectActivity extends ActionBarActivity {
                 EmUtils.hideProgressDialog(progressDialog);
             }
         });
+    }
 
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_select, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent i = new Intent(this, PreferencesActivity.class);
-            startActivity(i);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     public ArrayAdapter<String> getClassList(List<SClass> sClasses) {
         List<String> list = new ArrayList<String>();
@@ -166,4 +148,5 @@ public class SelectActivity extends ActionBarActivity {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         return dataAdapter;
     }
+
 }

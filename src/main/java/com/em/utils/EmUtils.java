@@ -21,6 +21,13 @@ public class EmUtils {
             pDialog.hide();
     }
 
+    public static String getrServerUrl() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(AppController.getInstance().getApplicationContext());
+        String serverLocation = sharedPrefs.getString("server_location", "");
+        String serverPort = sharedPrefs.getString("server_port", "");
+        return "http://" + serverLocation + ":" + serverPort + "/rest/";
+    }
+
     public static void clearPreferences() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(AppController.getInstance().getApplicationContext());
         SharedPreferences.Editor editor = sharedPrefs.edit();

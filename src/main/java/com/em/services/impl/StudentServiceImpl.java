@@ -12,10 +12,12 @@ import com.em.helper.CallBack;
 import com.em.helper.JacksonJsonRequest;
 import com.em.helper.ResponseEntity;
 import com.em.services.StudentService;
+import com.em.utils.EmUtils;
 import com.em.vo.SClass;
 import com.em.vo.Section;
 import com.em.vo.Student;
 import com.em.vo.Subject;
+import com.em.vo.User;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.spothero.volley.JacksonRequest;
@@ -27,14 +29,45 @@ import java.util.List;
 import java.util.Map;
 
 public class StudentServiceImpl implements StudentService {
-    private String SERVER_LOCATION = "http://192.168.1.4:8080/rest/";
+
+    public void login(User user, final CallBack<ResponseEntity> successCallBack, final CallBack<VolleyError> failureCallBack) {
+        String serviceUrl = EmUtils.getrServerUrl() + "user";
+        JacksonJsonRequest jacksonJsonRequest = new JacksonJsonRequest(
+                Request.Method.POST,
+                serviceUrl,
+                user,
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        failureCallBack.callBack(error);
+                    }
+                },
+                new Response.Listener<ResponseEntity>() {
+                    @Override
+                    public void onResponse(ResponseEntity response) {
+                        if (response != null) {
+                            successCallBack.callBack(response);
+                        }
+                    }
+                },
+                null, ResponseEntity.class) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json; charset=utf-8");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(jacksonJsonRequest);
+    }
 
     public void getProfileImage(int studentId) {
-        String serviceUrl = SERVER_LOCATION + "students";
+
     }
 
     public void getClasses(final CallBack<List<SClass>> successCallBack, final CallBack<List<SClass>> failureCallBack) {
-        String serviceUrl = SERVER_LOCATION + "classes";
+        String serviceUrl = EmUtils.getrServerUrl() + "classes";
         JacksonRequest jacksonRequest = new JacksonRequest<List<SClass>>(Request.Method.GET, serviceUrl,
                 new JacksonRequestListener<List<SClass>>() {
                     @Override
@@ -60,7 +93,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public void getSections(int classId, final CallBack<List<Section>> successCallBack, final CallBack<List<Section>> failureCallBack) {
-        String serviceUrl = SERVER_LOCATION + "sections";
+        String serviceUrl = EmUtils.getrServerUrl() + "sections";
         JacksonRequest jacksonRequest = new JacksonRequest<List<Section>>(Request.Method.GET, serviceUrl,
                 new JacksonRequestListener<List<Section>>() {
                     @Override
@@ -86,7 +119,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public void getSubjects(int classId, final CallBack<List<Subject>> successCallBack, final CallBack<List<Subject>> failureCallBack) {
-        String serviceUrl = SERVER_LOCATION + "subjects";
+        String serviceUrl = EmUtils.getrServerUrl() + "subjects";
         JacksonRequest jacksonRequest = new JacksonRequest<List<Subject>>(Request.Method.GET, serviceUrl,
                 new JacksonRequestListener<List<Subject>>() {
                     @Override
@@ -112,15 +145,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public void getStudents(int classId, int sectionId, final CallBack<List<Student>> successCallBack, final CallBack<List<Student>> failureCallBack) {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(AppController.getInstance().getApplicationContext());
-        //SharedPreferences.Editor editor = sharedPrefs.edit();
-        //editor.clear();
-        //editor.commit();
-        String serverLocation = sharedPrefs.getString("server_location", "");
-        String serverPort = sharedPrefs.getString("server_port", "");
-        classId = Integer.parseInt(sharedPrefs.getString("class_id", "-1"));
-        sectionId = Integer.parseInt(sharedPrefs.getString("section_id", "-1"));
-        String serviceUrl = SERVER_LOCATION + "students";
+        String serviceUrl = EmUtils.getrServerUrl() + "students";
         JacksonRequest jacksonRequest = new JacksonRequest<List<Student>>(Request.Method.GET, serviceUrl,
                 new JacksonRequestListener<List<Student>>() {
                     @Override
@@ -145,12 +170,8 @@ public class StudentServiceImpl implements StudentService {
         AppController.getInstance().addToRequestQueue(jacksonRequest);
     }
 
-    public void saveAttendance(int subjectId,  List<Student> students, final CallBack<ResponseEntity> successCallBack, final CallBack<VolleyError> failureCallBack) {
-        String serviceUrl = SERVER_LOCATION + "students";
-        /*Map<String, String> params = new HashMap<String, String>();
-        for (Student student : students) {
-            params.put(student.getStudentId().toString(), Integer.toString(student.getType()));
-        }*/
+    public void saveAttendance(int subjectId, List<Student> students, final CallBack<ResponseEntity> successCallBack, final CallBack<VolleyError> failureCallBack) {
+        String serviceUrl = EmUtils.getrServerUrl() + "students";
         JacksonJsonRequest jacksonJsonRequest = new JacksonJsonRequest(
                 Request.Method.POST,
                 serviceUrl,

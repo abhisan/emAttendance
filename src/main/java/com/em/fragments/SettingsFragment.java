@@ -1,7 +1,6 @@
 package com.em.fragments;
- 
+
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 
 import com.em.R;
