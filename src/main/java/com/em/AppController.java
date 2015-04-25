@@ -18,6 +18,8 @@ public class AppController extends Application {
     private ImageLoader mImageLoader;
     private static AppController mInstance;
     private String token;
+    private String userId;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -72,10 +74,20 @@ public class AppController extends Application {
         }
     }
 
-    public String getToken(){
+    public String getToken() {
         return this.token;
     }
-    public void setToken(String token){
+
+    public void setToken(String token) {
         this.token = token;
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
 }

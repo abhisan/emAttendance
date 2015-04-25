@@ -57,7 +57,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public void getClasses(final CallBack<ResponseEntity<List<SClass>>> successCallBack, final CallBack<VolleyError> failureCallBack) {
-        String serviceUrl = EmUtils.getrServerUrl() + "classes";
+        String serviceUrl = EmUtils.getrServerUrl() + "classes?userid=" + AppController.getInstance().getUserId() + "&st=" + AppController.getInstance().getToken();
         JacksonJsonRequest jacksonJsonRequest = new JacksonJsonRequest(
                 Request.Method.GET,
                 serviceUrl,
@@ -95,7 +95,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public void getSections(int classId, final CallBack<ResponseEntity<List<Section>>> successCallBack, final CallBack<VolleyError> failureCallBack) {
-        String serviceUrl = EmUtils.getrServerUrl() + "classes/" + classId + "/sections";
+        String serviceUrl = EmUtils.getrServerUrl() + "classes/" + classId + "/sections?userid=" + AppController.getInstance().getUserId() + "&st=" + AppController.getInstance().getToken();
         JacksonJsonRequest jacksonJsonRequest = new JacksonJsonRequest(
                 Request.Method.GET,
                 serviceUrl,
@@ -133,7 +133,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public void getSubjects(int classId, int sectionId, final CallBack<ResponseEntity<List<Subject>>> successCallBack, final CallBack<VolleyError> failureCallBack) {
-        String serviceUrl = EmUtils.getrServerUrl() + "classes/" + classId + "/sections/" + sectionId + "/subjects";
+        String serviceUrl = EmUtils.getrServerUrl() + "classes/" + classId + "/sections/" + sectionId + "/subjects?userid=" + AppController.getInstance().getUserId() + "&st=" + AppController.getInstance().getToken();
         JacksonJsonRequest jacksonJsonRequest = new JacksonJsonRequest(
                 Request.Method.GET,
                 serviceUrl,
@@ -171,7 +171,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public void getStudents(int classId, int sectionId, final CallBack<ResponseEntity<List<Student>>> successCallBack, final CallBack<VolleyError> failureCallBack) {
-        String serviceUrl = EmUtils.getrServerUrl() + "classes/" + classId + "/sections/" + sectionId + "/students";
+        String serviceUrl = EmUtils.getrServerUrl() + "classes/" + classId + "/sections/" + sectionId + "/students?userid=" + AppController.getInstance().getUserId() + "&st=" + AppController.getInstance().getToken();
         JacksonJsonRequest jacksonJsonRequest = new JacksonJsonRequest(
                 Request.Method.GET,
                 serviceUrl,
@@ -213,7 +213,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public void saveAttendance(int classId, int sectionId, int subjectId, List<Attendance> attendances, final CallBack<ResponseEntity> successCallBack, final CallBack<VolleyError> failureCallBack) {
-        String serviceUrl = EmUtils.getrServerUrl() + "classes/" + classId + "/sections/" + sectionId + "/attendance";
+        String serviceUrl = EmUtils.getrServerUrl() + "classes/" + classId + "/sections/" + sectionId + "/attendance?userid=" + AppController.getInstance().getUserId() + "&st=" + AppController.getInstance().getToken();
         JacksonJsonRequest jacksonJsonRequest = new JacksonJsonRequest(
                 Request.Method.POST,
                 serviceUrl,

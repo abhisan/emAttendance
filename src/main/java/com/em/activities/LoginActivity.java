@@ -25,10 +25,7 @@ import com.em.helper.ResponseEntity;
 import com.em.services.StudentService;
 import com.em.services.impl.StudentServiceImpl;
 import com.em.utils.EmUtils;
-import com.em.vo.SClass;
 import com.em.vo.User;
-
-import java.util.List;
 
 public class LoginActivity extends ActionBarActivity {
     private EditText userText;
@@ -48,7 +45,7 @@ public class LoginActivity extends ActionBarActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userId = userText.getText().toString();
+                final String userId = userText.getText().toString();
                 String password = passText.getText().toString();
                 if (TextUtils.isEmpty(userId)) {
                     userText.setError(getString(R.string.error_field_required));
@@ -65,6 +62,7 @@ public class LoginActivity extends ActionBarActivity {
                         public void callBack(ResponseEntity<String> responseEntity) {
                             if (responseEntity.getResponseCode().equals(ResponseCode.OK.getResCode())) {
                                 AppController.getInstance().setToken(responseEntity.getData().toString());
+                                AppController.getInstance().setUserId(userId);
                                 Intent i = new Intent(_this, SelectActivity.class);
                                 i.putExtra("data", "value");
                                 startActivity(i);
@@ -80,7 +78,6 @@ public class LoginActivity extends ActionBarActivity {
                             Toast.makeText(getApplicationContext(), "Could not connect to server.", Toast.LENGTH_SHORT).show();
                         }
                     });
-
                 }
             }
         });
