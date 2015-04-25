@@ -2,10 +2,7 @@ package com.em.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -15,9 +12,12 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.em.MainActivity;
 import com.em.R;
+import com.em.constants.Constants;
 import com.em.helper.CallBack;
+import com.em.helper.ResponseEntity;
 import com.em.services.StudentService;
 import com.em.services.impl.StudentServiceImpl;
 import com.em.utils.EmUtils;
@@ -53,41 +53,45 @@ public class SelectActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(_this, MainActivity.class);
-                i.putExtra("CLASS_ID", (String) selectClass.getSelectedItem());
-                i.putExtra("SECTION_ID", (String) selectSection.getSelectedItem());
-                i.putExtra("SUBJECT_ID", (String) selectSubject.getSelectedItem());
+                i.putExtra(Constants.CLASS_ID, (String) selectClass.getSelectedItem());
+                i.putExtra(Constants.SECTION_ID, (String) selectSection.getSelectedItem());
+                i.putExtra(Constants.SUBJECT_ID, (String) selectSubject.getSelectedItem());
                 startActivity(i);
             }
         });
         selectClass.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                studentService.getSections(1, new CallBack<List<Section>>() {
+                Integer classId = Integer.parseInt((String) selectClass.getSelectedItem());
+                studentService.getSections(classId, new CallBack<ResponseEntity<List<Section>>>() {
                     @Override
-                    public void callBack(List<Section> sections) {
-                        selectSection.setAdapter(getSectionList(sections));
+                    public void callBack(ResponseEntity<List<Section>> responseEntity) {
+                        selectSection.setAdapter(getSectionList(responseEntity.getData()));
                         EmUtils.hideProgressDialog(progressDialog);
+                        Integer classId = Integer.parseInt((String) selectClass.getSelectedItem());
+                        Integer sectionId = Integer.parseInt((String) selectSection.getSelectedItem());
+                        studentService.getSubjects(classId, sectionId, new CallBack<ResponseEntity<List<Subject>>>() {
+                            @Override
+                            public void callBack(ResponseEntity<List<Subject>> responseEntity) {
+                                selectSubject.setAdapter(getSubjectList(responseEntity.getData()));
+                                EmUtils.hideProgressDialog(progressDialog);
+                            }
+                        }, new CallBack<VolleyError>() {
+                            @Override
+                            public void callBack(VolleyError volleyError) {
+                                Toast.makeText(getApplicationContext(), "Could not fetch the subject list.", Toast.LENGTH_SHORT).show();
+                                EmUtils.hideProgressDialog(progressDialog);
+                            }
+                        });
                     }
-                }, new CallBack<List<Section>>() {
+                }, new CallBack<VolleyError>() {
                     @Override
-                    public void callBack(List<Section> sections) {
+                    public void callBack(VolleyError volleyError) {
                         Toast.makeText(getApplicationContext(), "Could not fetch the section list.", Toast.LENGTH_SHORT).show();
                         EmUtils.hideProgressDialog(progressDialog);
                     }
                 });
-                studentService.getSubjects(1, new CallBack<List<Subject>>() {
-                    @Override
-                    public void callBack(List<Subject> subjects) {
-                        selectSubject.setAdapter(getSubjectList(subjects));
-                        EmUtils.hideProgressDialog(progressDialog);
-                    }
-                }, new CallBack<List<Subject>>() {
-                    @Override
-                    public void callBack(List<Subject> subjects) {
-                        Toast.makeText(getApplicationContext(), "Could not fetch the subject list.", Toast.LENGTH_SHORT).show();
-                        EmUtils.hideProgressDialog(progressDialog);
-                    }
-                });
+
             }
 
             @Override
@@ -103,21 +107,20 @@ public class SelectActivity extends ActionBarActivity {
         progressDialog = new ProgressDialog(this);
         EmUtils.showProgressDialog(progressDialog);
         studentService = new StudentServiceImpl();
-        studentService.getClasses(new CallBack<List<SClass>>() {
+        studentService.getClasses(new CallBack<ResponseEntity<List<SClass>>>() {
             @Override
-            public void callBack(List<SClass> sClasses) {
-                selectClass.setAdapter(getClassList(sClasses));
+            public void callBack(ResponseEntity<List<SClass>> responseEntity) {
+                selectClass.setAdapter(getClassList(responseEntity.getData()));
                 EmUtils.hideProgressDialog(progressDialog);
             }
-        }, new CallBack<List<SClass>>() {
+        }, new CallBack<VolleyError>() {
             @Override
-            public void callBack(List<SClass> sClasses) {
+            public void callBack(VolleyError volleyError) {
                 Toast.makeText(getApplicationContext(), "Could not fetch the class list.", Toast.LENGTH_SHORT).show();
                 EmUtils.hideProgressDialog(progressDialog);
             }
         });
     }
-
 
     public ArrayAdapter<String> getClassList(List<SClass> sClasses) {
         List<String> list = new ArrayList<String>();
@@ -148,5 +151,4 @@ public class SelectActivity extends ActionBarActivity {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         return dataAdapter;
     }
-
 }

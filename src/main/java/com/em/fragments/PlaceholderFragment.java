@@ -41,10 +41,10 @@ public class PlaceholderFragment extends Fragment {
         int index = getArguments().getInt(INDEX);
         final Student data = ((MainActivity) getActivity()).getStudents().get(index);
         studentName.setText(data.getStudentName());
-        TextView studentId = (TextView) rootView.findViewById(R.id.studentId);
-        studentId.setText(data.getStudentId().toString());
+        TextView studentTextView = (TextView) rootView.findViewById(R.id.studentId);
+        studentTextView.setText(data.getStudentId().toString());
         NetworkImageView studentImage = (NetworkImageView) rootView.findViewById(R.id.studentImage);
-        loadProfileImage(studentImage);
+        loadProfileImage(studentImage,data.getStudentId() );
         AttendanceType type = AttendanceType.getAttendanceType(data.getType());
         if(type==AttendanceType.PRESENT)
             ((Button) rootView.findViewById(R.id.presentButton)).setTextColor(type.getColor());
@@ -65,7 +65,7 @@ public class PlaceholderFragment extends Fragment {
                 ((Button) rootView.findViewById(R.id.absentButton)).setTextColor(Color.BLACK);
                 ((Button) rootView.findViewById(R.id.leaveButton)).setTextColor(Color.BLACK);
                 ((Button) rootView.findViewById(R.id.lateButton)).setTextColor(Color.BLACK);
-                //((ViewPager) getActivity()).selectPage(1);
+                ((MainActivity) getActivity()).enableSaveButton();
             }
         });
         rootView.findViewById(R.id.absentButton).setOnClickListener(new View.OnClickListener() {
@@ -76,6 +76,7 @@ public class PlaceholderFragment extends Fragment {
                 ((Button) rootView.findViewById(R.id.absentButton)).setTextColor(Color.RED);
                 ((Button) rootView.findViewById(R.id.leaveButton)).setTextColor(Color.BLACK);
                 ((Button) rootView.findViewById(R.id.lateButton)).setTextColor(Color.BLACK);
+                ((MainActivity) getActivity()).enableSaveButton();
             }
         });
         rootView.findViewById(R.id.leaveButton).setOnClickListener(new View.OnClickListener() {
@@ -86,6 +87,7 @@ public class PlaceholderFragment extends Fragment {
                 ((Button) rootView.findViewById(R.id.absentButton)).setTextColor(Color.BLACK);
                 ((Button) rootView.findViewById(R.id.leaveButton)).setTextColor(Color.YELLOW);
                 ((Button) rootView.findViewById(R.id.lateButton)).setTextColor(Color.BLACK);
+                ((MainActivity) getActivity()).enableSaveButton();
             }
         });
         rootView.findViewById(R.id.lateButton).setOnClickListener(new View.OnClickListener() {
@@ -96,12 +98,13 @@ public class PlaceholderFragment extends Fragment {
                 ((Button) rootView.findViewById(R.id.absentButton)).setTextColor(Color.BLACK);
                 ((Button) rootView.findViewById(R.id.leaveButton)).setTextColor(Color.BLACK);
                 ((Button) rootView.findViewById(R.id.lateButton)).setTextColor(Color.BLUE);
+                ((MainActivity) getActivity()).enableSaveButton();
             }
         });
         return rootView;
     }
-    private void loadProfileImage(NetworkImageView imageView){
+    private void loadProfileImage(NetworkImageView imageView, Long studentId){
         ImageLoader mImageLoader = AppController.getInstance().getImageLoader();
-        imageView.setImageUrl(EmUtils.getrServerUrl()+"images", mImageLoader);
+        imageView.setImageUrl(EmUtils.getrServerUrl()+"images"+"/"+studentId, mImageLoader);
     }
 }

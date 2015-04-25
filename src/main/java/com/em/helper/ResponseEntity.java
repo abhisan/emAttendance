@@ -1,32 +1,22 @@
 package com.em.helper;
 
-public class ResponseEntity {
+public class ResponseEntity<T> {
+    private Integer responseCode;
+    private T data;
 
-    private String statusCode;
-    private Integer errorCode;
-    private String message;
-
-    public String getStatusCode() {
-        return statusCode;
+    public Integer getResponseCode() {
+        return responseCode;
     }
 
-    public void setStatusCode(String statusCode) {
-        this.statusCode = statusCode;
+    public void setResponseCode(Integer responseCode) {
+        this.responseCode = responseCode;
     }
 
-    public Integer getErrorCode() {
-        return errorCode;
+    public T getData() {
+        return data;
     }
 
-    public void setErrorCode(Integer errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public void setData(T data) {
+        this.data = data;
     }
 }

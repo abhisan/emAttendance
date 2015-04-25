@@ -7,7 +7,9 @@ import java.util.Date;
 
 public class Attendance {
     private Long studentId;
-    private AttendanceType type;
+
+    private int subjectId;
+    private int type;
     private Date date;
 
     public Date getDate() {
@@ -26,11 +28,20 @@ public class Attendance {
         this.studentId = studentId;
     }
 
-    public AttendanceType getType() {
+    public int getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(int subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    public int getType() {
         return type;
     }
 
-    public void setType(AttendanceType type) {
+    public void setType(int type) {
         this.type = type;
     }
+
 }

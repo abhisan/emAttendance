@@ -19,12 +19,16 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.em.AppController;
 import com.em.R;
+import com.em.enums.ResponseCode;
 import com.em.helper.CallBack;
 import com.em.helper.ResponseEntity;
 import com.em.services.StudentService;
 import com.em.services.impl.StudentServiceImpl;
 import com.em.utils.EmUtils;
+import com.em.vo.SClass;
 import com.em.vo.User;
+
+import java.util.List;
 
 public class LoginActivity extends ActionBarActivity {
     private EditText userText;
@@ -56,11 +60,11 @@ public class LoginActivity extends ActionBarActivity {
                     user.setPassword(password);
                     StudentService studentService = new StudentServiceImpl();
                     EmUtils.showProgressDialog(progressDialog);
-                    studentService.login(user, new CallBack<ResponseEntity>() {
+                    studentService.getServiceTicket(user, new CallBack<ResponseEntity<String>>() {
                         @Override
-                        public void callBack(ResponseEntity responseEntity) {
-                            if (responseEntity.getStatusCode().equals("OK")) {
-                                AppController.getInstance().setToken(responseEntity.getMessage());
+                        public void callBack(ResponseEntity<String> responseEntity) {
+                            if (responseEntity.getResponseCode().equals(ResponseCode.OK.getResCode())) {
+                                AppController.getInstance().setToken(responseEntity.getData().toString());
                                 Intent i = new Intent(_this, SelectActivity.class);
                                 i.putExtra("data", "value");
                                 startActivity(i);

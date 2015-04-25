@@ -5,10 +5,14 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.em.vo.SClass;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 public class JacksonJsonRequest<K, T> extends Request<T> {
@@ -42,12 +46,21 @@ public class JacksonJsonRequest<K, T> extends Request<T> {
     protected Response<T> parseNetworkResponse(NetworkResponse networkResponse) {
         String jsonString = new String(networkResponse.data);
         try {
-            T result = mMapper.readValue(jsonString, mClass);
+            T result;
+            if(getTypeReference()!=null)
+                result = mMapper.readValue(jsonString, getTypeReference());
+            else {
+                result = mMapper.readValue(jsonString, mClass);
+            }
             return Response.success(result, HttpHeaderParser.parseCacheHeaders(networkResponse));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    protected TypeReference getTypeReference(){
+       return null;
     }
 
     @Override

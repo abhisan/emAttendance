@@ -11,38 +11,63 @@ var sections = [];
 var subjects = [];
 var image;
 //app.use(express.static(__dirname + '/public'));
-router.post('/user', function (req, res) {
-    var user = req.body;
-	console.log("post" + JSON.stringify(user));
-	res.json({"statusCode":"OK", "errorCode":""});
+router.post('/ticket', function (req, res) {
+	printReq(req);
+	result = {"responseCode":"200", "data":"4AAQSkZJRgABAQEAYABgAAD4QBaRXhpZgAATU0AKgAAAAg"};
+	printResult(result);
+ 	res.json(result);
 });
+
 router.get('/classes', function(req, res) {
-	console.log("get classes");
-    res.json(classes);
+	console.log("=====POST:classes======");
+	printReq(req);
+	var result = {"responseCode":"200", "data":classes};
+	printResult(result);
+    res.json(result);
 });
-router.get('/sections', function(req, res) {
-	console.log(sections);
-    res.json(sections);
+router.get('/classes/:classId/sections', function(req, res) {
+	console.log("=====POST:sections======");
+	printReq(req);
+	var result = {"responseCode":"200", "data":sections};
+	printResult(result);
+    res.json(result);
 });
-router.get('/subjects', function(req, res) {
-	console.log(subjects);
-    res.json(subjects);
+router.get('/classes/:classId/sections/:sectionId/subjects', function(req, res) {
+	console.log("=====POST:subjects======");
+	printReq(req);
+	var result = {"responseCode":"200", "data":subjects};
+	printResult(result);
+    res.json(result);
 });
-router.get('/students', function(req, res) {
-	console.log(students);
-    res.json(students);
+router.get('/classes/:classId/sections/:sectionId/students', function(req, res) {
+	console.log("=====POST:students======");
+	printReq(req);
+	var result = {"responseCode":"200", "data":students};
+	printResult(result);
+    res.json(result);
 });
-router.get('/images', function(req, res) {
+router.get('/images/:studentId', function(req, res) {
+	printReq(req);
 	var buf = new Buffer(image, 'base64');
-	console.log("get images");
 	res.send(buf);
 });
-router.post('/students', function (req, res) {
-    var attendence = req.body;
-	console.log("post" + JSON.stringify(attendence));
-	res.json({"statusCode":"OK", "errorCode":"101"});
+router.post('/classes/:classId/sections/:sectionId/attendance', function (req, res) {
+	console.log("=====POST:attendance======");
+	printReq(req);
+ 	var result = {"responseCode":"200", "data":{}};
+	printResult(result);
+	res.json(result);
     //res.sendStatus(200);
 });
+
+function printReq(req){
+	console.log("req.query " + JSON.stringify(req.query));
+	console.log("req.params " + JSON.stringify(req.params));
+	console.log("req.body " + JSON.stringify(req.body));
+}
+function printResult(res){
+	console.log("res " + JSON.stringify(res));
+}
 
 app.use('/rest', router);
 app.listen(port);
